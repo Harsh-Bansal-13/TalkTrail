@@ -14,7 +14,7 @@ const app = express();
 app.use(express.json());
 app.use(
   cors({
-    origin: ["https://talk-trail.vercel.app/"],
+    origin: ["https://talk-trail.vercel.app"],
     // origin: ["http://localhost:3000"],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
@@ -30,7 +30,7 @@ const server = app.listen(port, console.log("Server connected to Harsh", port));
 const io = require("socket.io")(server, {
   pingTimeout: 300000,
   cors: {
-    origin: ["https://talk-trail.vercel.app/"],
+    origin: ["https://talk-trail.vercel.app"],
     // origin: ["http://localhost:3000"],
   },
 });
