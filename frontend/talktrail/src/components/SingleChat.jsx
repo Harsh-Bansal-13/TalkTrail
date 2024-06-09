@@ -91,7 +91,6 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
           },
           config
         );
-        console.log(data);
 
         socket.emit("new message", data);
         setMessages([...messages, data]);
@@ -136,7 +135,6 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       }
     });
   });
-  console.log("notif", notification);
   const typingHandler = (e) => {
     setNewMessage(e.target.value);
     if (!socketConnected) return;

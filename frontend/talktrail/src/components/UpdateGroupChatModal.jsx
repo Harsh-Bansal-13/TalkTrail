@@ -46,7 +46,6 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
         },
       };
       const { data } = await axios.get(`/api/users?search=${search}`, config);
-      console.log(data);
       setLoading(false);
       setSearchResult(data);
     } catch (error) {
@@ -79,9 +78,6 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
         },
         config
       );
-
-      // console.log(data._id);
-      // setSelectedChat("");
       setSelectedChat(data);
       setFetchAgain(!fetchAgain);
       setRenameLoading(false);
@@ -137,12 +133,10 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
         },
         config
       );
-      console.log("Harsh", data);
       setSelectedChat(data);
       setFetchAgain(!fetchAgain);
       setLoading(false);
     } catch (error) {
-      console.log(error);
       toast({
         title: "Error Occured!",
         description: "Error Occured",
