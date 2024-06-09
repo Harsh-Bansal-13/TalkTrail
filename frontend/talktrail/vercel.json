@@ -3,10 +3,6 @@
       {
         "source": "/api/:path*",
         "destination": "https://talktrail.onrender.com/:path*"
-      },
-      {
-        "source": "/:path*",
-        "destination": "https://talktrail.onrender.com/:path*"
       }
     ]
   }
