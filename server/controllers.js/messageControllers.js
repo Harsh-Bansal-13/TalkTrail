@@ -14,7 +14,6 @@ const sendMessage = asyncHandler(async (req, res) => {
     chat: chatId,
   };
   try {
-    // console.log("HARSH");
     var message = await Message.create(newMessage);
     message = await User.populate(message, {
       path: "sender",

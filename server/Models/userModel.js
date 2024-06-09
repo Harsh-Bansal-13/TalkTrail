@@ -39,8 +39,8 @@ const validate = (data) => {
     name: Joi.string().required().label("username"),
     email: Joi.string().email().required().label("email"),
     password: passwordComplexity().required().label("password"),
-    pic: Joi.string().optional().label("pic"), // Make isSeller optional
-    isAdmin: Joi.boolean().optional().label("isAdmin"), // Make isSeller optional
+    pic: Joi.string().optional().label("pic"),
+    isAdmin: Joi.boolean().optional().label("isAdmin"),
   });
   return schema.validate(data);
 };
