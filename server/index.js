@@ -7,14 +7,15 @@ const userRoutes = require("./routes/userRoutes");
 const chatRoutes = require("./routes/chatRoutes");
 const messageRoutes = require("./routes/messageRoutes");
 const { notFound, errorHandler } = require("./middleware/errorMiddleware");
-const port = process.env.port;
-dotenv.config();
+const temp = require("dotenv").config();
+const port = process.env.PORT || 4000;
 connection();
 const app = express();
 app.use(express.json());
 app.use(
   cors({
-    origin: ["http://localhost:3000"],
+    origin: ["https://talk-trail.vercel.app/"],
+    // origin: ["http://localhost:3000"],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
@@ -29,7 +30,8 @@ const server = app.listen(port, console.log("Server connected to Harsh", port));
 const io = require("socket.io")(server, {
   pingTimeout: 300000,
   cors: {
-    origin: ["http://localhost:3000"],
+    origin: ["https://talk-trail.vercel.app/"],
+    // origin: ["http://localhost:3000"],
   },
 });
 io.on("connection", (socket) => {
