@@ -1,9 +1,15 @@
 {
-    "rewrites": [
-      {
-        "source": "/api/:path*",
-        "destination": "https://talktrail.onrender.com/api/:path*"
-      }
-    ]
-  }
-  
+  "version": 2,
+  "builds": [
+    {
+      "src": "index.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/"
+    }
+  ]
+}
