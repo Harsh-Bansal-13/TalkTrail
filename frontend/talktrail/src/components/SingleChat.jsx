@@ -16,7 +16,8 @@ import axios from "axios";
 import io from "socket.io-client";
 import Lottie from "react-lottie";
 import animationData from "../animation/typing.json";
-const ENDPOINT = "https://talk-trail-bdyl.vercel.app";
+const ENDPOINT = "https://talktrail-production.up.railway.app";
+// const ENDPOINT = "https://talk-trail-bdyl.vercel.app";
 // const ENDPOINT = "https://talktrail.onrender.com";
 // const ENDPOINT = "http://localhost:3001";
 
