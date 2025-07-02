@@ -6,6 +6,7 @@ const connection = require("./db");
 const userRoutes = require("./routes/userRoutes");
 const chatRoutes = require("./routes/chatRoutes");
 const messageRoutes = require("./routes/messageRoutes");
+const recommendationRoutes = require("./routes/recommendationRoutes");
 const { notFound, errorHandler } = require("./middleware/errorMiddleware");
 const temp = require("dotenv").config();
 const port = process.env.PORT || 4000;
@@ -24,6 +25,7 @@ app.use(
 app.use("/api", userRoutes);
 app.use("/api/chat", chatRoutes);
 app.use("/api/message", messageRoutes);
+app.use("/api/recommendations", recommendationRoutes);
 app.use(notFound);
 app.use(errorHandler);
 const server = app.listen(port, console.log("Server connected to Harsh", port));
