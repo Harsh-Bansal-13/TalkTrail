@@ -27,6 +27,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [newMessage, setNewMessage] = useState("");
+  const [suggestion, setSuggestion] = useState("");
   const [socketConnected, setSocketConnected] = useState(false);
   const [typing, setTyping] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
@@ -42,6 +43,26 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const { selectedChat, setSelectedChat, user, notification, setNotification } =
     ChatState();
 
+  useEffect(() => {
+    const delayDebounce = setTimeout(() => {
+      if (selectedChat?._id) {
+        axios
+          .post(`/api/recommendations/${selectedChat._id}`, {
+            userId: user._id,
+            query: newMessage,
+          })
+          .then((res) => {
+            setSuggestion(res.data.suggestion);
+            console.log(res.data.suggestion);
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+      }
+    }, 600); // 600ms debounce
+
+    return () => clearTimeout(delayDebounce);
+  }, [newMessage, selectedChat?._id]);
   const fetchMessages = async () => {
     if (!selectedChat) {
       return;
@@ -156,6 +177,13 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       }
     }, timelength);
   };
+  const handleKeyDown = (e) => {
+    if (e.key === "Tab" && suggestion) {
+      e.preventDefault();
+      setNewMessage(suggestion);
+      setSuggestion("");
+    }
+  };
   return (
     <>
       {selectedChat ? (
@@ -238,7 +266,19 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                 placeholder="Enter a message"
                 onChange={typingHandler}
                 value={newMessage}
+                onKeyDown={handleKeyDown}
               ></Input>
+              {newMessage === "" && suggestion && (
+                <div className="text-gray-400 italic mt-1">
+                  Suggested: {suggestion}
+                </div>
+              )}
+
+              {newMessage !== "" && suggestion && (
+                <div className="text-blue-500 italic mt-1">
+                  Completion: {suggestion}
+                </div>
+              )}
             </FormControl>
           </Box>
         </>
