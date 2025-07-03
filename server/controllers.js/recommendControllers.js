@@ -24,9 +24,9 @@ const recommendMessage = asyncHandler(async (req, res) => {
   let prompt;
 
   if (!query) {
-    prompt = `This is a conversation:\n${context}\n\nBased on the conversation, suggest what you might say next. Respond naturally as the next message.In This Conversation You is you. Only Give me Message`;
+    prompt = `I am using as api for my chat application for automatically recommending users. This is a conversation:\n${context}\n\nBased on the conversation, suggest what you might say next. Respond naturally as the next message.Think In This Conversation You is you. Only Give me Message`;
   } else {
-    prompt = `This is a conversation:\n${context}\n\n and you are currently typing: "${query}". Based on the context, continue the message intelligently.  Only Give me Message`;
+    prompt = `I am using as api for my chat application for automatically recommending users.This is a conversation:\n${context}\n\n and you are currently typing: "${query}". Based on the context, continue the message intelligently.  Only Give me Message`;
   }
 
   const response = await fetch(
