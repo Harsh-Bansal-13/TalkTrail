@@ -16,7 +16,7 @@ const recommendMessage = asyncHandler(async (req, res) => {
   const context = messages
     .map((m) => {
       const senderLabel =
-        m.sender._id.toString() === userId ? "You" : m.sender.name;
+        m.sender._id.toString() === userId ? "Gemini" : m.sender.name;
       return `${senderLabel}: ${m.content}`;
     })
     .join("\n");
@@ -24,9 +24,9 @@ const recommendMessage = asyncHandler(async (req, res) => {
   let prompt;
 
   if (!query) {
-    prompt = `I am using as api for my chat application for automatically recommending users. This is a conversation:\n${context}\n\nBased on the conversation, suggest what you might say next. Respond naturally as the next message.Think In This Conversation You is you. Only Give me Message`;
+    prompt = `I am using you as api for my chat application for automatically recommending users. This is a conversation:\n${context}\n\nBased on the conversation, suggest what you might say next. Respond naturally as the next message.Think In This Conversation Gemini is you.what will you say Only Give me Message `;
   } else {
-    prompt = `I am using as api for my chat application for automatically recommending users.This is a conversation:\n${context}\n\n and you are currently typing: "${query}". Based on the context, continue the message intelligently.  Only Give me Message`;
+    prompt = `I am using you as api for my chat application for automatically recommending users, gemini is You in this conversation .This is a conversation:\n${context}\n\n and You are currently typing: "${query}". Based on the context, continue the message intelligently as you have been used as recommending.Only Give me Message`;
   }
 
   const response = await fetch(
