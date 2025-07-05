@@ -20,7 +20,6 @@ const recommendMessage = asyncHandler(async (req, res) => {
       return `${senderLabel}: ${m.content}`;
     })
     .join("\n");
-  console.log(context);
   let prompt;
 
   if (!query) {
@@ -47,4 +46,40 @@ const recommendMessage = asyncHandler(async (req, res) => {
 
   return res.json({ suggestion });
 });
-module.exports = { recommendMessage };
+const generateSummary = asyncHandler(async (req, res) => {
+  const { chatId } = req.params;
+  let messages = await Message.find({ chat: chatId });
+  messages = await User.populate(messages, {
+    path: "sender",
+    select: "name pic email",
+  });
+  messages = await Chat.populate(messages, {
+    path: "chat",
+  });
+  const context = messages
+    .map((m) => {
+      const senderLabel = m.sender.name;
+      return `${senderLabel}: ${m.content}`;
+    })
+    .join("\n");
+  const prompt = `Summarize the following chat conversation in a concise paragraph:\n\n${context} Give me only summary`;
+
+  const response = await fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.API_KEY_GEMINI}`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: prompt }] }],
+      }),
+    }
+  );
+
+  const data = await response.json();
+  const summary = data?.candidates?.[0]?.content?.parts?.[0]?.text || "";
+
+  return res.json({ summary });
+});
+module.exports = { recommendMessage, generateSummary };

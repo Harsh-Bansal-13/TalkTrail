@@ -7,7 +7,9 @@ import {
   Spinner,
   useToast,
   Input,
+  Tooltip,
 } from "@chakra-ui/react";
+import { saveAs } from "file-saver";
 import { getSender, getSenderFull } from "../config/ChatLogics";
 import ProfileModal from "./ProfileModal";
 import UpdateGroupChatModal from "./UpdateGroupChatModal";
@@ -185,6 +187,24 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       setSuggestion("");
     }
   };
+  const [btnloading, setBtnLoading] = useState(false);
+
+  const handleDownloadSummary = async () => {
+    try {
+      setBtnLoading(true);
+      const res = await axios.get(
+        `/api/recommendations/summary/${selectedChat._id}`
+      );
+      const summary = res.data.summary;
+      const blob = new Blob([summary], { type: "text/plain;charset=utf-8" });
+      saveAs(blob, `chat-summary-${selectedChat._id}.txt`);
+    } catch (error) {
+      console.error("Summary download failed:", error);
+      alert("Failed to download summary.");
+    } finally {
+      setBtnLoading(false);
+    }
+  };
   return (
     <>
       {selectedChat ? (
@@ -212,11 +232,36 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             {!selectedChat.isGroupChat ? (
               <>
                 {getSender(user, selectedChat.users)}
-                <ProfileModal user={getSenderFull(user, selectedChat.users)} />
+                <div className="flex gap-2">
+                  {" "}
+                  <Tooltip label="Download chat summary">
+                    <IconButton
+                      icon={<i class="fi fi-sr-file-download"></i>}
+                      onClick={handleDownloadSummary}
+                      className="bg-purple-50"
+                      colorScheme="purple"
+                      aria-label="Download Chat Summary"
+                      isDisabled={btnloading}
+                    />
+                  </Tooltip>
+                  <ProfileModal
+                    user={getSenderFull(user, selectedChat.users)}
+                  />
+                </div>
               </>
             ) : (
               <>
                 {selectedChat.chatName.toUpperCase()}
+                <Tooltip label="Download chat summary">
+                  <IconButton
+                    icon={<i class="fi fi-sr-file-download"></i>}
+                    onClick={handleDownloadSummary}
+                    className="bg-purple-50"
+                    colorScheme="purple"
+                    aria-label="Download Chat Summary"
+                    isDisabled={btnloading}
+                  />
+                </Tooltip>
                 <UpdateGroupChatModal
                   fetchMessages={fetchMessages}
                   fetchAgain={fetchAgain}
